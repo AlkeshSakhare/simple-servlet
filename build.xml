@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project name="HelloServlet" default="compile">
+
+	<property name="app.name" value="helloservlet" />
+	<property name="dir.src" value="./src" />
+	<property name="dir.lib" value="./lib" />
+	<property name="dir.pages" value="./meta" />
+	<property name="dir.build" value="./build" />
+	<property name="dir.meta" value="./meta" />
+	<property name="dir.bin" value="./bin" />
+
+	<property file="local.properties" />
+
+	<path id="CLASSPATH">
+		<fileset dir="${dir.lib}">
+			<include name="*.jar" />
+		</fileset>
+		<dirset dir="${dir.build}" />
+	</path>
+
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${dir.bin}" includes="*.*" />
+			<fileset dir="${dir.build}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${dir.src}" destdir="${dir.build}"
+			classpathref="CLASSPATH" debug="on" includes="**/*.java" />
+	</target>
+
+	<target name="package" depends="compile">
+		<war destfile="${dir.bin}/${app.name}.war"
+			webxml="${dir.meta}/WEB-INF/web.xml" duplicate="preserve">
+			<classes dir="${dir.build}">
+				<include name="**/*.class" />
+			</classes>
+		</war>
+	</target>
+
+	<target name="deploy" depends="package">
+		<copy todir="${DEPLOY-DIR}">
+			<fileset dir="bin">
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="undeploy">
+		<delete file="${DEPLOY-DIR}/${app.name}.war"/>
+	</target>
+
+</project>
