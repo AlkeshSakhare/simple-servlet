@@ -32,7 +32,7 @@
 	</target>
 
 	<target name="package" depends="compile">
-		<war destfile="${dir.bin}/${app.name}.war"
+		<war destfile="${dir.bin}/${app.name}-${label}.war"
 			webxml="${dir.meta}/WEB-INF/web.xml" duplicate="preserve">
 			<classes dir="${dir.build}">
 				<include name="**/*.class" />
